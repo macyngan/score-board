@@ -6,12 +6,12 @@ https://macyngan.github.io/score-board/
 
 ![alt text](https://github.com/macyngan/score-board/blob/master/demo/screenshots/screenshot_01.png "Score Board Screenshot")
 
-#### Tech Stack:
+### Tech Stack:
 * React
 * Javascript
 * Semantic UI
 * HTML
 * CSS
 
-### Notes:
+#### Notes:
 index.html is a compiled version of before-compiled-index.html, using compiled version so github page can render it for demo purpose.
