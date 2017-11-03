@@ -12,268 +12,396 @@
     <script src="js/vendor/react-dom.js"></script>
     <script src="js/vendor/babel.min.js"></script>
     <script src="js/vendor/prop-types.min.js"></script>
-    <script type="text/babel">
-      var PLAYERS = [
-        {
-          name: "Ana Siu",
-          score: 20,
-          id: 1,
-        },
-        {
-          name: "Andrew Hoskins",
-          score: 30,
-          id: 2,
-        },
-        {
-          name: "Linda Smith",
-          score: 15,
-          id: 3,
-        }
-      ];
+    <script>
+    "use strict";
 
-      var nextId = PLAYERS.length + 1;
+    var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
 
-      class Application extends React.Component{
-        constructor(props) {
-          super(props);
-          this.state = {
-            players: this.props.initialPlayers
-          };
-          this.onPlayerAdd = this.onPlayerAdd.bind(this);
-          this.onRemovePlayer = this.onRemovePlayer.bind(this);
-        }
+    function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
-        onScoreChange(index, delta) {
+    function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
+
+    function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
+
+    var PLAYERS = [{
+      name: "Ana Siu",
+      score: 20,
+      id: 1
+    }, {
+      name: "Andrew Hoskins",
+      score: 30,
+      id: 2
+    }, {
+      name: "Linda Smith",
+      score: 15,
+      id: 3
+    }];
+
+    var nextId = PLAYERS.length + 1;
+
+    var Application = function (_React$Component) {
+      _inherits(Application, _React$Component);
+
+      function Application(props) {
+        _classCallCheck(this, Application);
+
+        var _this = _possibleConstructorReturn(this, (Application.__proto__ || Object.getPrototypeOf(Application)).call(this, props));
+
+        _this.state = {
+          players: _this.props.initialPlayers
+        };
+        _this.onPlayerAdd = _this.onPlayerAdd.bind(_this);
+        _this.onRemovePlayer = _this.onRemovePlayer.bind(_this);
+        return _this;
+      }
+
+      _createClass(Application, [{
+        key: "onScoreChange",
+        value: function onScoreChange(index, delta) {
           this.state.players[index].score += delta;
           this.setState(this.state);
         }
-
-        onPlayerAdd(name) {
-          if(name != "") {
+      }, {
+        key: "onPlayerAdd",
+        value: function onPlayerAdd(name) {
+          if (name != "") {
             this.state.players.push({
               name: name,
               score: 0,
-              id: nextId,
+              id: nextId
             });
             this.setState(this.state);
             nextId = nextId + 1;
           }
         }
-
-        onRemovePlayer(index) {
-            this.state.players.splice(index, 1);
-            this.setState(this.state);
+      }, {
+        key: "onRemovePlayer",
+        value: function onRemovePlayer(index) {
+          this.state.players.splice(index, 1);
+          this.setState(this.state);
         }
-
-        render() {
-          return(
-            <div className="app">
-              <Header title="Score Board" players={this.state.players}/>
-              <div className="players">
-                {this.state.players.map(function(player, index){
-                  return(
-                    <Player
-                      onRemove={function(){this.onRemovePlayer(index)}.bind(this)}
-                      onScoreChange={function(delta){this.onScoreChange(index, delta)}.bind(this)}
-                      name={player.name}
-                      score={player.score}
-                      key={player.id}
-                    />
-                  );
-                }.bind(this))}
-              </div>
-              <AddPlayerForm onAdd={this.onPlayerAdd}/>
-            </div>
+      }, {
+        key: "render",
+        value: function render() {
+          return React.createElement(
+            "div",
+            { className: "app" },
+            React.createElement(Header, { title: "Score Board", players: this.state.players }),
+            React.createElement(
+              "div",
+              { className: "players" },
+              this.state.players.map(function (player, index) {
+                return React.createElement(Player, {
+                  onRemove: function () {
+                    this.onRemovePlayer(index);
+                  }.bind(this),
+                  onScoreChange: function (delta) {
+                    this.onScoreChange(index, delta);
+                  }.bind(this),
+                  name: player.name,
+                  score: player.score,
+                  key: player.id
+                });
+              }.bind(this))
+            ),
+            React.createElement(AddPlayerForm, { onAdd: this.onPlayerAdd })
           );
         }
+      }]);
+
+      return Application;
+    }(React.Component);
+
+    function Player(props) {
+      return React.createElement(
+        "div",
+        { className: "player" },
+        React.createElement(
+          "div",
+          { className: "player-name" },
+          React.createElement(
+            "a",
+            { className: "remove-player", onClick: props.onRemove },
+            React.createElement("i", { "class": "window close large icon" })
+          ),
+          props.name
+        ),
+        React.createElement(
+          "div",
+          { className: "player-score" },
+          React.createElement(Counter, { score: props.score, onChange: props.onScoreChange })
+        )
+      );
+    }
+
+    Player.propTypes = {
+      name: PropTypes.string.isRequired,
+      score: PropTypes.string.isRequired,
+      onScoreChange: PropTypes.func.isRequired,
+      onRemove: PropTypes.func.isRequired
+    };
+
+    function Counter(props) {
+      return React.createElement(
+        "div",
+        { className: "counter" },
+        React.createElement(
+          "button",
+          { className: "ui inverted blue button", onClick: function onClick() {
+              props.onChange(-1);
+            } },
+          " - "
+        ),
+        React.createElement(
+          "div",
+          null,
+          props.score
+        ),
+        React.createElement(
+          "button",
+          { className: "ui inverted blue button", onClick: function onClick() {
+              props.onChange(1);
+            } },
+          " + "
+        )
+      );
+    }
+
+    Counter.propTypes = {
+      score: PropTypes.number.isRequired,
+      onChange: PropTypes.func.isRequired
+    };
+
+    function Header(props) {
+      return React.createElement(
+        "div",
+        { className: "header" },
+        React.createElement(Stats, { className: "statsComps", players: props.players }),
+        React.createElement(
+          "h1",
+          { className: "title" },
+          props.title
+        ),
+        React.createElement(Stopwatch, { className: "stopwatchComps" })
+      );
+    }
+
+    Header.propTypes = {
+      title: PropTypes.string.isRequired,
+      players: PropTypes.array.isRequired
+    };
+
+    function Stats(props) {
+      var totalPlayers = props.players.length;
+      var totalPoints = props.players.reduce(function (total, player) {
+        return total + player.score;
+      }, 0);
+
+      return React.createElement(
+        "table",
+        { className: "stats medium text" },
+        React.createElement(
+          "tbody",
+          null,
+          React.createElement(
+            "tr",
+            null,
+            React.createElement(
+              "td",
+              null,
+              "Players:"
+            ),
+            React.createElement(
+              "td",
+              null,
+              totalPlayers
+            )
+          ),
+          React.createElement(
+            "tr",
+            null,
+            React.createElement(
+              "td",
+              null,
+              "Total Points:"
+            ),
+            React.createElement(
+              "td",
+              null,
+              totalPoints
+            )
+          )
+        )
+      );
+    }
+
+    Stats.propTypes = {
+      players: PropTypes.array.isRequired
+    };
+
+    var AddPlayerForm = function (_React$Component2) {
+      _inherits(AddPlayerForm, _React$Component2);
+
+      function AddPlayerForm(props) {
+        _classCallCheck(this, AddPlayerForm);
+
+        var _this2 = _possibleConstructorReturn(this, (AddPlayerForm.__proto__ || Object.getPrototypeOf(AddPlayerForm)).call(this, props));
+
+        _this2.state = {
+          name: ""
+        };
+        _this2.onSubmit = _this2.onSubmit.bind(_this2);
+        _this2.onNameChange = _this2.onNameChange.bind(_this2);
+        return _this2;
       }
 
-      function Player(props) {
-        return(
-          <div className="player">
-            <div className="player-name">
-              <a className="remove-player" onClick={props.onRemove}><i class="window close large icon"></i></a>
-              {props.name}
-            </div>
-            <div className="player-score">
-              <Counter score={props.score} onChange={props.onScoreChange}/>
-            </div>
-          </div>
-        );
+      _createClass(AddPlayerForm, [{
+        key: "onNameChange",
+        value: function onNameChange(e) {
+          this.setState({
+            name: e.target.value
+          });
+        }
+      }, {
+        key: "onSubmit",
+        value: function onSubmit(e) {
+          e.preventDefault();
+          this.props.onAdd(this.state.name);
+          this.setState({
+            name: ""
+          });
+        }
+      }, {
+        key: "render",
+        value: function render() {
+          return React.createElement(
+            "div",
+            { className: "add-player-form ui inverted form" },
+            React.createElement(
+              "form",
+              { onSubmit: this.onSubmit },
+              React.createElement(
+                "div",
+                { className: "ui input" },
+                React.createElement("input", { type: "text", value: this.state.name, onChange: this.onNameChange.bind(this) })
+              ),
+              React.createElement("input", { className: "ui button", type: "submit", value: "Add Player" })
+            )
+          );
+        }
+      }]);
+
+      return AddPlayerForm;
+    }(React.Component);
+
+    AddPlayerForm.propTypes = {
+      onAdd: PropTypes.func.isRequired
+    };
+
+    var Stopwatch = function (_React$Component3) {
+      _inherits(Stopwatch, _React$Component3);
+
+      function Stopwatch(props) {
+        _classCallCheck(this, Stopwatch);
+
+        var _this3 = _possibleConstructorReturn(this, (Stopwatch.__proto__ || Object.getPrototypeOf(Stopwatch)).call(this, props));
+
+        _this3.state = {
+          running: false,
+          elapsedTime: 0,
+          previousTime: 0
+        };
+
+        _this3.onTick = _this3.onTick.bind(_this3);
+        _this3.onStop = _this3.onStop.bind(_this3);
+        _this3.onStart = _this3.onStart.bind(_this3);
+        _this3.onReset = _this3.onReset.bind(_this3);
+        return _this3;
       }
 
-      Player.propTypes = {
-        name: PropTypes.string.isRequired,
-        score: PropTypes.string.isRequired,
-        onScoreChange: PropTypes.func.isRequired,
-        onRemove: PropTypes.func.isRequired,
-      }
-
-      function Counter(props) {
-        return(
-          <div className="counter">
-            <button className="ui inverted blue button" onClick={function(){props.onChange(-1);}}> - </button>
-            <div>{props.score}</div>
-            <button className="ui inverted blue button" onClick={function(){props.onChange(1);}}> + </button>
-          </div>
-        );
-      }
-
-      Counter.propTypes = {
-        score: PropTypes.number.isRequired,
-        onChange: PropTypes.func.isRequired,
-      }
-
-      function Header(props) {
-        return(
-          <div className="header">
-            <Stats className="statsComps" players={props.players}/>
-            <h1 className="title">{props.title}</h1>
-            <Stopwatch className="stopwatchComps"/>
-          </div>
-        );
-      }
-
-      Header.propTypes = {
-        title: PropTypes.string.isRequired,
-        players: PropTypes.array.isRequired,
-      }
-
-      function Stats(props) {
-        var totalPlayers = props.players.length;
-        var totalPoints = props.players.reduce(function(total, player){
-          return total + player.score;
-        }, 0);
-
-        return(
-          <table className="stats medium text">
-            <tbody>
-              <tr>
-                <td>Players:</td>
-                <td>{totalPlayers}</td>
-              </tr>
-              <tr>
-                <td>Total Points:</td>
-                <td>{totalPoints}</td>
-              </tr>
-            </tbody>
-          </table>
-        );
-      }
-
-      Stats.propTypes = {
-          players: PropTypes.array.isRequired,
-      }
-
-      class AddPlayerForm extends React.Component{
-          constructor(props) {
-            super(props);
-            this.state = {
-              name: "",
-            }
-            this.onSubmit = this.onSubmit.bind(this);
-            this.onNameChange = this.onNameChange.bind(this);
-          }
-
-          static propTypes = {
-            onAdd: PropTypes.func.isRequired,
-          }
-
-          onNameChange(e) {
+      _createClass(Stopwatch, [{
+        key: "componentDidMount",
+        value: function componentDidMount() {
+          this.interval = setInterval(this.onTick, 100);
+        }
+      }, {
+        key: "componentWillUnmount",
+        value: function componentWillUnmount() {
+          clearInterval(this.interval);
+        }
+      }, {
+        key: "onTick",
+        value: function onTick() {
+          if (this.state.running) {
+            var now = Date.now();
             this.setState({
-              name: e.target.value
+              previousTime: now,
+              elapsedTime: this.state.elapsedTime + (now - this.state.previousTime)
             });
           }
+        }
+      }, {
+        key: "onStop",
+        value: function onStop() {
+          this.setState({
+            running: false
+          });
+        }
+      }, {
+        key: "onStart",
+        value: function onStart() {
+          this.setState({
+            running: true,
+            previousTime: Date.now()
+          });
+        }
+      }, {
+        key: "onReset",
+        value: function onReset() {
+          this.setState({
+            elapsedTime: 0,
+            previousTime: Date.now()
+          });
+        }
+      }, {
+        key: "render",
+        value: function render() {
+          var seconds = Math.floor(this.state.elapsedTime / 1000);
+          return React.createElement(
+            "div",
+            { className: "stopWatch" },
+            React.createElement(
+              "h4",
+              null,
+              "Stopwatch"
+            ),
+            React.createElement(
+              "div",
+              { className: "stopwatch-time medium text" },
+              seconds
+            ),
+            this.state.running ? React.createElement(
+              "button",
+              { className: "ui inverted teal button", onClick: this.onStop },
+              "Stop"
+            ) : React.createElement(
+              "button",
+              { className: "ui inverted teal button", onClick: this.onStart },
+              "Start"
+            ),
+            React.createElement(
+              "button",
+              { className: "ui inverted button", onClick: this.onReset },
+              "Reset"
+            )
+          );
+        }
+      }]);
 
-          onSubmit(e) {
-            e.preventDefault();
-            this.props.onAdd(this.state.name);
-            this.setState({
-              name: "",
-            });
-          }
+      return Stopwatch;
+    }(React.Component);
 
-          render() {
-            return(
-              <div className="add-player-form ui inverted form">
-                <form onSubmit={this.onSubmit}>
-                  <div className="ui input">
-                    <input type="text" value={this.state.name} onChange={this.onNameChange.bind(this)}/>
-                  </div>
-                  <input className="ui button" type="submit" value="Add Player"/>
-                </form>
-              </div>
-            );
-          }
-      }
-
-      class Stopwatch extends React.Component{
-          constructor(props) {
-            super(props);
-            this.state = {
-              running: false,
-              elapsedTime: 0,
-              previousTime: 0,
-            }
-
-            this.onTick = this.onTick.bind(this);
-            this.onStop = this.onStop.bind(this);
-            this.onStart = this.onStart.bind(this);
-            this.onReset = this.onReset.bind(this);
-          }
-
-          componentDidMount() {
-            this.interval = setInterval(this.onTick, 100);
-          }
-
-          componentWillUnmount() {
-            clearInterval(this.interval);
-          }
-
-          onTick() {
-            if(this.state.running) {
-              var now = Date.now();
-              this.setState({
-                previousTime: now,
-                elapsedTime: this.state.elapsedTime + (now - this.state.previousTime),
-              });
-            }
-          }
-
-          onStop() {
-            this.setState({
-              running:false,
-            })
-          }
-
-          onStart() {
-            this.setState({
-              running: true,
-              previousTime: Date.now(),
-            })
-          }
-
-          onReset() {
-            this.setState({
-              elapsedTime: 0,
-              previousTime: Date.now(),
-            })
-          }
-
-          render() {
-            var seconds = Math.floor(this.state.elapsedTime / 1000);
-            return(
-              <div className="stopWatch">
-                <h4>Stopwatch</h4>
-                <div className="stopwatch-time medium text">{seconds}</div>
-                {this.state.running ? <button className="ui inverted teal button" onClick={this.onStop}>Stop</button> : <button className="ui inverted teal button" onClick={this.onStart}>Start</button>}
-                <button className="ui inverted button" onClick={this.onReset}>Reset</button>
-              </div>
-            );
-          }
-      }
-
-      ReactDOM.render(<Application initialPlayers={PLAYERS}/>, document.getElementById('container'));
+    ReactDOM.render(React.createElement(Application, { initialPlayers: PLAYERS }), document.getElementById('container'));
     </script>
   </body>
 </html>
