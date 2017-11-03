@@ -12,3 +12,6 @@ https://macyngan.github.io/score-board/
 * Semantic UI
 * HTML
 * CSS
+
+### Notes:
+index.html is a compiled version of before-compiled-index.html, using compiled version so github page can render it for demo purpose.
